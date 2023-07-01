@@ -22,3 +22,11 @@ pnpm run dev
 pnpm run build
 pnpm run export
 ```
+
+## Update from the template
+
+```shell
+git remote add template git@github.com:flolbr/reveal.js-template.git
+git fetch template
+git merge template/master --allow-unrelated-histories --squash
+```
