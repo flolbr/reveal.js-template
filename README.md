@@ -13,7 +13,7 @@ pnpm install
 ## Usage
   
 ```shell
-pnpm run dev
+pnpm run start
 ```
 
 ## Export
