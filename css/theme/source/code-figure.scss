@@ -1,0 +1,95 @@
+figure.code {
+  .code-wrapper {
+    margin-top: 0;
+  }
+
+  & > figcaption {
+    font-size: 0.8em;
+    padding-left: 50px;
+    text-align: left
+  }
+
+  & code {
+    font-size: 0.8em;
+  }
+}
+
+code {
+  border-radius: 10px;
+  font-size: 1.1em;
+
+  &.inline {
+    background-color: #393939;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+  }
+}
+
+.layout-columns-2 {
+  figure.code {
+    & > figcaption {
+      padding-left: 25px;
+    }
+  }
+
+  .columns {
+    display: flex;
+    flex-direction: row;
+    //flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: stretch;
+  }
+
+  .column {
+    flex: 0 1 auto;
+    width: 50%;
+    max-width: 50%;
+    padding: 0 10px;
+    margin: 10px;
+  }
+}
+
+.focus-fragment {
+  //opacity: 0.3;
+  &, &.visible {
+    opacity: 0.3;
+  }
+
+  &.current-fragment {
+    opacity: 1;
+  }
+}
+
+$animation-duration: .2s;
+
+.column:first-child.fragment.show {
+  transform: translateX(-50%);
+
+  transition: all $animation-duration ease;
+
+  &.visible {
+    transform: translateX(0);
+  }
+}
+
+.column:last-child.fragment.show {
+  transform: translateX(50%);
+
+  &.visible {
+    transform: translateX(0);
+  }
+}
+
+.fragment.show {
+  width: 0;
+  opacity: 0;
+
+  transition: all $animation-duration ease;
+
+  &.visible {
+    opacity: 1;
+    width: 100%;
+  }
+}

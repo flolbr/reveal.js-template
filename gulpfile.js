@@ -269,20 +269,36 @@ gulp.task('default', gulp.series(gulp.parallel('js', 'css', 'plugins'), 'test'))
 
 gulp.task('build', gulp.parallel('js', 'css', 'plugins'))
 
+const exported_elmts = [
+    './index.html',
+    './dist/**',
+    './lib/**',
+    './images/**',
+    './plugin/**',
+    // './**/*.md',
+    './slides/**',
+    'node_modules/reveal.js-copycode/plugin/copycode/copycode.js',
+    'node_modules/reveal.js-menu/menu.js',
+    'node_modules/reveal_external/external/external.js',
+];
+
 gulp.task('package', gulp.series(() =>
 
     gulp.src(
-        [
-            './index.html',
-            './dist/**',
-            './lib/**',
-            './images/**',
-            './plugin/**',
-            './**/*.md'
-        ],
+        exported_elmts,
         { base: './' }
     )
     .pipe(zip('reveal-js-presentation.zip')).pipe(gulp.dest('./'))
+
+))
+
+
+gulp.task('export', gulp.series(() =>
+    gulp.src(
+        exported_elmts,
+        { base: './' }
+    )
+    .pipe(gulp.dest('./export/'))
 
 ))
 

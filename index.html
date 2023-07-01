@@ -1,40 +1,93 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+    <title>reveal.js</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css">
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <link rel="stylesheet" href="dist/theme/code-figure.css">
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section data-external="slides/title_slide.html"></section>
+        <section>Slide 1</section>
+        <section>Slide 2</section>
+    </div>
+</div>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script src="plugin/math/math.js"></script>
+<script src="node_modules/reveal.js-copycode/plugin/copycode/copycode.js"></script>
+<script src="node_modules/reveal.js-menu/menu.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        dependencies: [
+            {
+                src: 'node_modules/reveal_external/external/external.js',
+                condition: function () {
+                    return !!document.querySelector('[data-external],[data-external-replace]');
+                }
+            },
+        ],
+        hash: true,
+        slideNumber: 'c/t',
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX, CopyCode, RevealMenu],
+        maxScale: 1.0,
+        width: 1920,
+        height: 1080,
+        margin: 0.1,
+    });
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+    Reveal.configure({
+        pdfSeparateFragments: false,
+    })
+
+    Reveal.on('fragmentshown', event => {
+        // event.fragment = the fragment DOM element
+        // console.log('Shown', event.fragment);
+        event.fragment.closest('section').querySelectorAll('[data-fragment-sync]').forEach((el) => {
+            if (el.attributes['data-fragment-sync'].value.split(',').includes(event.fragment.attributes['data-fragment-index'].value)) {
+                el.classList.add('visible');
+                el.classList.add('current-fragment');
+            } else {
+                el.classList.remove('current-fragment');
+            }
+        });
+    });
+
+    Reveal.on('fragmenthidden', event => {
+        // event.fragment = the fragment DOM element
+        // console.log('Hidden', event.fragment);
+        const section = event.fragment.closest('section');
+        const currentFragment = section.querySelector('[data-fragment-index].current-fragment')
+        if (currentFragment === null) {
+            return;
+        }
+        section.querySelectorAll('[data-fragment-sync]').forEach((el) => {
+            if (el.attributes['data-fragment-sync'].value.split(',')[0] === event.fragment.attributes['data-fragment-index'].value) {
+                el.classList.remove('visible');
+                el.classList.remove('current-fragment');
+            } else if (el.attributes['data-fragment-sync'].value.split(',').includes(currentFragment.attributes['data-fragment-index'].value)) {
+                el.classList.add('current-fragment');
+            } else {
+                el.classList.remove('current-fragment');
+            }
+        });
+    });
+</script>
+</body>
 </html>
